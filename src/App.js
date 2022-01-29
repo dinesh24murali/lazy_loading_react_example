@@ -1,28 +1,30 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Routes, Route, Link } from "react-router-dom";
 
-import Home from './components/Home';
-import About from './components/About';
-import Contact from './components/Contact';
-
 import "./App.css";
+
+const Home = React.lazy(() => import('./components/Home'));
+const About = React.lazy(() => import('./components/About'));
+const Contact = React.lazy(() => import('./components/Contact'));
 
 function App() {
   return (
     <div className="App">
       <h1>Welcome to my Website!</h1>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>&nbsp;
-          <Link to="/about">About</Link>&nbsp;
-          <Link to="/contact">Contact</Link>&nbsp;
-        </li>
-      </ul>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="about" element={<About />} />
-        <Route path="contact" element={<Contact />} />
-      </Routes>
+      <div>
+        <Link className="link" to="/">Home</Link>
+        <Link className="link" to="/about">About</Link>
+        <Link className="link" to="/contact">Contact</Link>
+      </div>
+      <div className="content">
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="contact" element={<Contact />} />
+          </Routes>
+        </Suspense>
+      </div>
     </div>
   );
 }
